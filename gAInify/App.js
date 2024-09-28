@@ -1,12 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack'; 
+import Home1 from './components/Home';
+import CurrentWeek from './components/CurrentWeek';
+import Trainer from './components/Trainer';
 
+
+const Stack = createNativeStackNavigator();
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={Home1} />
+        <Stack.Screen name="CurrentWeek" component={CurrentWeek} />
+        <Stack.Screen name="Trainer" component={Trainer} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
