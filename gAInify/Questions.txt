@@ -1,0 +1,14 @@
+These are going to be Questions that the AI uses for training/initial prompting.
+
+Initial setup questions:
+- Sign up with email/password (Auth0?)
+
+- What is your goal? (gain muscle/lose weight)
+    - (EXTRA) - rank these priorities for the gym (gain muscle, lose weight, Overall Health, endurance)
+- Height
+- Weight 
+- Age
+
+
+Feedback Questions:
+(after workout)
