@@ -1,10 +1,9 @@
 import React from "react";
 import { Text, View } from "react-native";
-
-export default function Trainer() {
+export default function Settings() {
   return (
   <View>
-    <Text>Trainer</Text>
+    <Text>Settings</Text>
   </View>
   );
 }
