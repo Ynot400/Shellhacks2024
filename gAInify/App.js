@@ -3,13 +3,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home1 from "./components/Home";
 import CurrentWeek from "./components/CurrentWeek";
 import Trainer from "./components/Trainer";
-import React from "react";
 import Lesson from "./components/Lesson";
+import React from "react";
+import { Provider as PaperProvider } from "react-native-paper"; // Importing PaperProvider
+
 const Stack = createNativeStackNavigator();
+
 export default function App() {
   return (
     <NavigationContainer>
-      {/* <Text>Hello World</Text> */}
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home1} />
         <Stack.Screen name="CurrentWeek" component={CurrentWeek} />
@@ -19,12 +21,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
