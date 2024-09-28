@@ -1,7 +1,10 @@
-console.log('Hello, World!');
+//console.log('Hello, World!');
 
 require('dotenv').config();  // Load the environment variables from the .env file
 const https = require('https');
+
+// Example of dynamic message input (this could come from an API call or request body)
+const userMessage = "I've been doing this program for 2 weeks, why have I not lost weight?";  // Replace with dynamic input
 
 // Define the message in the correct format for gpt-3.5-turbo, with system message
 const data = JSON.stringify({
@@ -13,7 +16,7 @@ const data = JSON.stringify({
     },
     {
       role: "user",
-      content: "I've been doing this program for 2 weeks, why have I not lost weight?"
+      content: userMessage  // Use the dynamic user message here
     }
   ],
   max_tokens: 300,
