@@ -1,7 +1,8 @@
-
-export default function CurrentWeek() { 
+import React from "react";
+import { View, Text } from "react-native";
+export default function CurrentWeek() {
   return (
-    <View style={styles.container}>
+    <View>
       <Text>Current Week</Text>
     </View>
   );
