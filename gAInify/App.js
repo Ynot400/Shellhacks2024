@@ -1,5 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";import Home1 from "./components/Home";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Home1 from "./components/Home";
 import CurrentWeek from "./components/CurrentWeek";
 import Trainer from "./components/Trainer";
 import React from "react";
