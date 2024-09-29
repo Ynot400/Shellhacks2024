@@ -1,5 +1,5 @@
 // const e = require('express');
-const { db } = require('../../firebaseNodeJS');
+const { db } = require('../firebaseNodeJS');
 
 async function getExercises(day) {
   try {
