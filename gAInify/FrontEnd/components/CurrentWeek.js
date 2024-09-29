@@ -23,9 +23,17 @@ const workouts = [
   { id: 4, title: "Arm Workout", completed: false },
 ];
 
-current_day = 0;
-reps = [8, 12];
+const { xp, setXP, level, setLevel, body_weight, setWeight, current_week, setWeek } = useContext(UserContext);
 sets = 3;
+
+const handleIncrease = () => {
+  if (xp >= 0.9) {
+    setXP(Number((xp - 0.9).toFixed(1)))
+    setLevel(level + 1)
+  } else {
+    setXP(Number((xp + (0.1)).toFixed(1)));
+  }
+};
 
 export default function CurrentWeek() {
   const [workoutStatus, setWorkoutStatus] = useState(workouts); // Track workout completion status
@@ -80,6 +88,7 @@ export default function CurrentWeek() {
     setCurrentStep(0); // Reset to initial step
     setCurrentWorkoutId(null);
     current_day += 1;
+    handleIncrease();
     navigation.navigate("CurrentWeek"); // Navigate back to Home screen or desired screen
   };
 

@@ -7,7 +7,7 @@ export const UserProvider = (props) => {
   const [level, setLevel] = useState(1);
   const [body_weight, setWeight] = useState(0);
   const [current_week, setWeek] = useState(1);
-
+  const [current_day, setDay] = useState(0);
   const contextValue = { xp, setXP, level, setLevel, body_weight, setWeight, current_week, setWeek };
   
   return (
