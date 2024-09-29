@@ -27,6 +27,8 @@ current_day = 0;
 reps = [8, 12];
 sets = 3;
 
+
+
 export default function CurrentWeek() {
   const [workoutStatus, setWorkoutStatus] = useState(workouts); // Track workout completion status
   const [modalVisible, setModalVisible] = useState(false); // Modal visibility state
@@ -43,9 +45,12 @@ export default function CurrentWeek() {
     const fetchExercises = async () => {
       try {
         const response = await axios.get("http://localhost:3000/getWorkouts", {
-          params: current_day, // Pass current day as a query parameter
+          params: { current_day },
         });
+        console.log(response.data); // Check what you're getting
         setExercises(response.data);
+       
+
       } catch (err) {
         setError(err.message);
       } finally {
@@ -56,8 +61,18 @@ export default function CurrentWeek() {
     fetchExercises();
   }, []);
 
+  // Function to dynamically require images
+  const getImageSource = (imageName) => {
+    try {
+      // let image = require(`./images/${imageName}.png`); // Adjust the path as necessary
+      return image;
+    } catch (error) {
+      console.error("Image not found:", error);
+      return null; // Return a default image or null
+    }
+  };
+
   const handlePress = (workoutId) => {
-    // Set the current workout and show the modal
     setCurrentWorkoutId(workoutId);
     setModalVisible(true);
 
@@ -107,8 +122,8 @@ export default function CurrentWeek() {
             styles.circle,
             {
               backgroundColor: workout.completed ? "green" : "gray",
-              top: index * 100, // Increase vertical spacing to avoid overlap
-              left: screenWidth / 2 + Math.sin(index * 1.5) * 100, // Adjusting curve factor to avoid overlap
+              top: index * 100,
+              left: screenWidth / 2 + Math.sin(index * 1.5) * 100,
             },
           ]}
           onPress={() => handlePress(workout.id)}
@@ -121,23 +136,23 @@ export default function CurrentWeek() {
       <Modal
         visible={modalVisible}
         animationType="slide"
-        transparent={false} // Setting transparent to false for full-screen
+        transparent={false}
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={{ flex: 1, padding: 20 }}>
           <Text style={{ fontSize: 24, marginBottom: 20 }}>
-            {currentExercise.name}
+            {currentExercise.id}
           </Text>
           <Card>
             {currentExercise.image && (
               <Card.Cover
-                source={currentExercise.image}
+                source={getImageSource(currentExercise.image)} // Get the image source dynamically
                 style={{ width: "100%", height: 300 }}
               />
             )}
             <Card.Content>
               <Text style={{ marginTop: 10, fontSize: 20 }}>
-                Weight: {currentExercise.weight || "N/A"}
+                Weight: {currentExercise.Weight || "N/A"}
               </Text>
               <Text style={{ fontSize: 20 }}>
                 Reps: 8-12

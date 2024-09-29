@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const serviceAccount = require("../gainifydatabase-firebase-adminsdk-xxgai-acc1135d22.json");
+const serviceAccount = require("./gainifydatabase-firebase-adminsdk-xxgai-acc1135d22.json");
 require('dotenv').config();
 
 

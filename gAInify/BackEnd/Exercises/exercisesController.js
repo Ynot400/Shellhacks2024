@@ -1,24 +1,25 @@
-const express = require('express');
-const { getExercises, modifyExercise } = require('./exercisesService');
+const { getExercises, modifyExercise } = require('./exercisesService'); // Import service functions
 
-
-const router = express.Router();
 
 // GET exercises
 router.get('/getWorkouts', async (req, res) => {
   try {
-    const exercises = await getExercises();
+    // Call the service function and pass necessary data
+    const exercises = await getExercises(req.query.current_day); // Assume you're passing a query parameter 'current_day'
     res.status(200).json(exercises);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
+// POST to modify an exercise
 router.post('/modifyWorkout', async (req, res) => {
   try {
-    modifyExercise(req.body);
-    res.status(200);
+    await modifyExercise(req.body); // Pass the request body to the service
+    res.status(200).json({ message: 'Workout modified successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
+module.exports = router; // Export the router

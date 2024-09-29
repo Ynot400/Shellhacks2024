@@ -18,11 +18,11 @@ export default function Trainer() {
     axios
       .post("http://localhost:3000/askTrainer", { message: inquiry })  // URL points to the backend
       .then((res) => {
-        console.log("Response from backend:", res.data);
-        setResponse(res.data.message);
+        // console.log("Response from backend:", res.data);
+        setResponse(res.data);
       })
       .catch((err) => {
-        console.error("Error from backend:", err.response ? err.response.data : err.message);
+        // console.error("Error from backend:", err.response ? err.response.data : err.message);
         setResponse("Error getting response from the trainer.");
       });
   };
