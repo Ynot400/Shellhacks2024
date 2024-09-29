@@ -18,6 +18,7 @@ async function getExercises(day) {
         exercises.push({ id: doc.id, ...doc.data() }); // Include document ID
     });
 
+    console.log("Day: ", day);
     
     // Map of muscle groups to their respective collection names
     const muscleGroupCollections = {
