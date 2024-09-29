@@ -4,13 +4,13 @@ const https = require('https');
 // Example of dynamic message input (this could come from an API call or request body)
 const userMessage = "I've been doing this program for 2 weeks, why have I not lost weight?";  // Replace with dynamic input
 
-// Define the message in the correct format for gpt-3.5-turbo, with system message
+// Define the message in the correct format for gpt-4-turbo, with system message
 const data = JSON.stringify({
-  model: "gpt-3.5-turbo",
+  model: "gpt-4-turbo",
   messages: [
     {
       role: "system",
-      content: "You are a personal trainer. You must only answer questions related to fitness, nutrition, and personal training. Avoid discussing any unrelated topics."
+      content: "You are a personal trainer. You must only answer questions related to fitness, nutrition, and personal training. Avoid discussing any unrelated topics. Fit your responses concisely for the client, they value brevity. Keep responses under 300 tokens."
     },
     {
       role: "user",
