@@ -7,8 +7,8 @@ import {
   Dimensions,
   Modal,
   ActivityIndicator,
-  CheckBox
-  Image,
+  CheckBox,
+  Image
 } from "react-native";
 import Slider from '@react-native-community/slider';
 import VerticalSlider from "../verticalSlider";
@@ -99,14 +99,6 @@ export default function CurrentWeek() {
   const [exerciseUncomfortable, setExerciseUncomfortable] = useState(false);
   const [easeLevel, setEaseLevel] = useState(0);
   const [xpGained, setXpGained] = useState({ reps: 0, sets: 0 });
-
-  const [workoutStatus, setWorkoutStatus] = useState(workouts);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [currentWorkoutId, setCurrentWorkoutId] = useState(null);
-  const [currentStep, setCurrentStep] = useState(0);
-  const [exercises, setExercises] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const { theme } = useTheme();
   const navigation = useNavigation();
 
