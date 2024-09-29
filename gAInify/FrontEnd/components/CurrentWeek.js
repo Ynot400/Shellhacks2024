@@ -78,9 +78,6 @@ const images = {
   daylock: require("../images/daylock.png"),
 };
 
-
-
-
 export default function CurrentWeek() {
   const { xp, setXP, level, setLevel } = useContext(UserContext);
   const [workoutStatus, setWorkoutStatus] = useState(workouts); // Track workout completion status
@@ -153,6 +150,9 @@ export default function CurrentWeek() {
     setCurrentStep(0);
     setCurrentWorkoutId(null);
     current_day += 1;
+    if (current_day > 3) {
+      current_day = 0;
+    }
     handleIncrease();
     navigation.navigate("CurrentWeek");
   };
@@ -226,7 +226,11 @@ export default function CurrentWeek() {
             )}
             <Card.Content>
               <Text style={{ marginTop: 10, fontSize: 20 }}>
-                Weight: {currentExercise.Weight || "N/A"}
+                {currentExercise.Weight && currentExercise.Weight[0] > 0
+                  ? `Weight: ${currentExercise.Weight[0]} LBs`
+                  : currentExercise.Time
+                  ? `Time: ${currentExercise.Time}`
+                  : "Time: 10 minutes"}
               </Text>
               <Text style={{ fontSize: 20 }}>Reps: 8-12</Text>
               <Text style={{ fontSize: 20 }}>Sets: 3</Text>
