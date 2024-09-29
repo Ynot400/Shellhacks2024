@@ -15,9 +15,10 @@ async function getExercises(day) {
     
     snapshot = await db.collection(collectionName).where('Primary', '==', true).get();
     snapshot.forEach(doc => {
-        exercises.push({ id: doc.id, ...doc.data() }); // Include document ID
+        exercises.push({ collection_name: collectionName, id: doc.id, ...doc.data() }); // Include document ID
     });
 
+    console.log("Day: ", day);
     
     // Map of muscle groups to their respective collection names
     const muscleGroupCollections = {
@@ -55,7 +56,7 @@ async function getExercises(day) {
     for (const collection of collectionsToFetch) {
         snapshot = await db.collection(collection).where('Primary', '==', true).get();
         snapshot.forEach(doc => {
-            exercises.push({ id: doc.id, ...doc.data() }); // Include document ID
+            exercises.push({ collection_name: collection, id: doc.id, ...doc.data() }); // Include document ID
         });
     }
 
@@ -64,7 +65,7 @@ async function getExercises(day) {
 
 } catch (error) {
     console.error('Error fetching exercises:', error);
-    throw error; // Re-throw the error after logging it
+    throw error; // Re-throw the error after logging it 
 }
 }
 

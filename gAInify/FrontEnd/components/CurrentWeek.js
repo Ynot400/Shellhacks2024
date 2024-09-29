@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import DynamicImage from './DynamicImages'; // Import the component
 import axios from "axios"; // Import Axios
 
 // Get device width to help position elements
@@ -23,8 +24,57 @@ const workouts = [
   { id: 4, title: "Arm Workout", completed: false },
 ];
 
-const { xp, setXP, level, setLevel, body_weight, setWeight, current_week, setWeek } = useContext(UserContext);
+
+
+current_day = 0;
+reps = [8, 12];
 sets = 3;
+
+const images = {
+  "Back Extensions": require('../images/Back Extensions.png'),
+  "Bench": require('../images/Bench.png'),
+  "Bicep Curl": require('../images/Bicep Curl.png'),
+  "Biking": require('../images/Biking.png'),
+  "Cable Fly": require('../images/Cable Fly.png'),
+  "Chest Dips": require('../images/Chest Dips.png'),
+  "Crunches": require('../images/Crunches.png'),
+  "Deadlift": require('../images/Deadlift.png'),
+  "Decline Bench Press": require('../images/Decline Bench Press.png'),
+  "Decline Dumbbell Press": require('../images/Decline Dumbbell Press.png'),
+  "Donkey Calf Raises": require('../images/Donkey Calf Raises.png'),
+  "Dumbbell Calf Raises": require('../images/Dumbbell Calf Raises.png'),
+  "Dumbbell Fly": require('../images/Dumbbell Fly.png'),
+  "Dumbbell Rows": require('../images/Dumbbell Rows.png'),
+  "Face Pulls": require('../images/Face Pulls.png'),
+  "Front Raise": require('../images/Front Raise.png'),
+  "Glute-Ham Raise": require('../images/Glute-Ham Raise.png'),
+  "Good Mornings": require('../images/Good Mornings.png'),
+  "Hammer Curls": require('../images/Hammer Curls.png'),
+  "Incline Barbell": require('../images/Incline Barbell.png'),
+  "Incline Bench Situps": require('../images/Incline Bench Situps.png'),
+  "Incline Bench": require('../images/Incline Bench.png'),
+  "Incline Cable Flyes": require('../images/Incline Cable Flyes.png'),
+  "Lat Pulldowns": require('../images/Lat Pulldowns.png'),
+  "Lateral Raises": require('../images/Lateral Raises.png'),
+  "Leg Curl Machine": require('../images/Leg Curl Machine.png'),
+  "Leg Extension Machine": require('../images/Leg Extension Machine.png'),
+  "Leg Raises": require('../images/Leg Raises.png'),
+  "Lunges": require('../images/Lunges.png'),
+  "Pec Deck Machine": require('../images/Pec Deck Machine.png'),
+  "Pull-Ups": require('../images/Pull-Ups.png'),
+  "Rear Delt Fly (Dumbbell)": require('../images/Rear Delt Fly (Dumbbell).png'),
+  "Reverse Curls": require('../images/Reverse Curls.png'),
+  "Reverse Pec Deck Fly": require('../images/Reverse Pec Deck Fly.png'),
+  "Romanian Deadlifts": require('../images/Romanian Deadlifts.png'),
+  "Rowing Machine": require('../images/Rowing Machine.png'),
+  "Seated Calf Raises": require('../images/Seated Calf Raises.png'),
+  "Shoulder Press": require('../images/Shoulder Press.png'),
+  "Squats": require('../images/Squats.png'),
+  "Treadmill": require('../images/Treadmill.png'),
+  "Tricep Dips": require('../images/Tricep Dips.png'),
+  "Tricep Overhead": require('../images/Tricep Overhead.png'),
+  "Tricep Pushdown": require('../images/Tricep Pushdown.png')
+};
 
 const handleIncrease = () => {
   if (xp >= 0.9) {
@@ -51,9 +101,13 @@ export default function CurrentWeek() {
     const fetchExercises = async () => {
       try {
         const response = await axios.get("http://localhost:3000/getWorkouts", {
-          params: current_day, // Pass current day as a query parameter
+          params: { current_day },
         });
+        console.log(response.data); // Check what you're getting
         setExercises(response.data);
+        // setImages(respone.data.id: )
+       
+
       } catch (err) {
         setError(err.message);
       } finally {
@@ -65,7 +119,6 @@ export default function CurrentWeek() {
   }, []);
 
   const handlePress = (workoutId) => {
-    // Set the current workout and show the modal
     setCurrentWorkoutId(workoutId);
     setModalVisible(true);
 
@@ -116,8 +169,8 @@ export default function CurrentWeek() {
             styles.circle,
             {
               backgroundColor: workout.completed ? "green" : "gray",
-              top: index * 100, // Increase vertical spacing to avoid overlap
-              left: screenWidth / 2 + Math.sin(index * 1.5) * 100, // Adjusting curve factor to avoid overlap
+              top: index * 100,
+              left: screenWidth / 2 + Math.sin(index * 1.5) * 100,
             },
           ]}
           onPress={() => handlePress(workout.id)}
@@ -130,23 +183,23 @@ export default function CurrentWeek() {
       <Modal
         visible={modalVisible}
         animationType="slide"
-        transparent={false} // Setting transparent to false for full-screen
+        transparent={false}
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={{ flex: 1, padding: 20 }}>
           <Text style={{ fontSize: 24, marginBottom: 20 }}>
-            {currentExercise.name}
+            {currentExercise.id}
           </Text>
           <Card>
-            {currentExercise.image && (
+            {currentExercise.id && images[currentExercise.id] && (
               <Card.Cover
-                source={currentExercise.image}
-                style={{ width: "100%", height: 300 }}
+                source={images[currentExercise.id]}
+                style={styles.cardCover}
               />
             )}
             <Card.Content>
               <Text style={{ marginTop: 10, fontSize: 20 }}>
-                Weight: {currentExercise.weight || "N/A"}
+                Weight: {currentExercise.Weight || "N/A"}
               </Text>
               <Text style={{ fontSize: 20 }}>
                 Reps: 8-12
@@ -185,5 +238,9 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     fontWeight: "bold",
+  },
+  cardCover: {
+    width: 300,
+    height: 300,
   },
 });
