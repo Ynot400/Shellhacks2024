@@ -17,7 +17,7 @@ app.use(express.json());
 app.get('/getWorkouts', async (req, res) => {
   try {
     // Call the service function and pass necessary data
-    const exercises = await getExercises(req.query.current_day); // Pass query parameter 'current_day'
+    const exercises = await getExercises(req.query.current_day); // Pass query parameter 'current_day'  
     res.status(200).json(exercises);
   } catch (error) {
     res.status(500).json({ error: error.message });
