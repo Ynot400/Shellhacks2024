@@ -94,6 +94,7 @@ const exampleDifficultyData = {
     collectionName: 'Abs (Abs)',
     id: 'Crunches',
     difficultyRating: 6,  // This is less than 7, so we will adjust weight or minutes
+    uncomfortable: true
 };
 
 // Example data for updatePrimaryExercise
