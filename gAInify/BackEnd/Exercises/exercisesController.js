@@ -1,6 +1,7 @@
 const express = require('express');
 const { getExercises, modifyExercise } = require('./exercisesService');
 
+
 const router = express.Router();
 
 // GET exercises
