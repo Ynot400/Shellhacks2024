@@ -64,7 +64,7 @@ async function getExercises(day) {
 
 } catch (error) {
     console.error('Error fetching exercises:', error);
-    throw error; // Re-throw the error after logging it
+    throw error; // Re-throw the error after logging it 
 }
 }
 
