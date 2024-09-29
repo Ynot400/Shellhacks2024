@@ -7,7 +7,7 @@ BackEnd/gainifydatabase-firebase-adminsdk-xxgai-acc1135d22.json
 .expo/
 dist/
 web-build/
-
+package-lock.json
 # Native
 *.orig.*
 *.jks
