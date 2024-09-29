@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Text, View, TextInput, Button, StyleSheet } from "react-native";
 import axios from "axios";
+import { useTheme } from '../ColorContext';
 
 export default function Trainer() {
+  const { theme } = useTheme();
   const [inquiry, setInquiry] = useState('');  // User inquiry state
   const [response, setResponse] = useState('');  // AI response state
 
@@ -28,7 +30,7 @@ export default function Trainer() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.background}]}>
       <Text style={styles.title}>Ask the AI Trainer</Text>
       <TextInput
         style={styles.input}
