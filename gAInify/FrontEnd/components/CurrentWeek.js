@@ -7,8 +7,11 @@ import {
   Dimensions,
   Modal,
   ActivityIndicator,
+  CheckBox
   Image,
 } from "react-native";
+import Slider from '@react-native-community/slider';
+import VerticalSlider from "../verticalSlider";
 import { Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
@@ -84,6 +87,19 @@ const handleIncrease = () => {
 };
 
 export default function CurrentWeek() {
+  const [workoutStatus, setWorkoutStatus] = useState(workouts); // Track workout completion status
+  const [modalVisible, setModalVisible] = useState(false); // Modal visibility state
+  const [currentWorkoutId, setCurrentWorkoutId] = useState(null); // Track current workout
+  const [currentStep, setCurrentStep] = useState(0); // Track current step in workout
+  const [exercises, setExercises] = useState([]); // State for fetched exercises
+  const [loading, setLoading] = useState(true); // State for loading
+  const [error, setError] = useState(null); // State for error handling
+  const [sliderSets, setSliderSets] = useState(3);
+  const [sliderReps, setSliderReps] = useState(8);
+  const [exerciseUncomfortable, setExerciseUncomfortable] = useState(false);
+  const [easeLevel, setEaseLevel] = useState(0);
+  const [xpGained, setXpGained] = useState({ reps: 0, sets: 0 });
+
   const [workoutStatus, setWorkoutStatus] = useState(workouts);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentWorkoutId, setCurrentWorkoutId] = useState(null);
@@ -122,10 +138,18 @@ export default function CurrentWeek() {
     );
   };
 
+  
+
   const handleNext = () => {
     if (currentStep < exercises.length - 1) {
       setCurrentStep(currentStep + 1);
     }
+
+    const newXp = {
+      reps: sliderReps * 5,  // Example XP calculation
+      sets: sliderSets * 10,
+    };
+    setXpGained(newXp);
   };
 
   const handleComplete = () => {
@@ -212,6 +236,43 @@ export default function CurrentWeek() {
               <Text style={{ fontSize: 20 }}>Sets: 3</Text>
             </Card.Content>
           </Card>
+
+          {/* XP Display */}
+          <View style={styles.xpContainer}>
+            <Text style={{ fontSize: 18 }}>XP Gained:</Text>
+            <Text>avg reps: {xpGained.reps}xp</Text>
+            <Text>sets: {xpGained.sets}xp</Text>
+          </View>
+
+          {/* Slider for sets */}
+          <Text>Number of sets</Text>
+          <Slider
+            minimumValue={1}
+            maximumValue={10}
+            step={1}
+            value={sliderSets}
+            onValueChange={setSliderSets}
+          />
+
+          {/* Slider for reps */}
+          <Text>Average number of reps</Text>
+          <Slider
+            minimumValue={5}
+            maximumValue={20}
+            step={1}
+            value={sliderReps}
+            onValueChange={setSliderReps}
+          />
+
+          {/* Checkbox for discomfort */}
+          <View style={styles.checkboxContainer}>
+            <CheckBox
+              value={exerciseUncomfortable}
+              onValueChange={setExerciseUncomfortable}
+            />
+            <Text>Was this exercise uncomfortable?</Text>
+          </View>
+          
           <Button
             style={{ marginTop: 20, fontSize: 20 }}
             mode="contained"
