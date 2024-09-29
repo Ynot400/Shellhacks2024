@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,9 +6,11 @@ import {
   StyleSheet,
   Dimensions,
   Modal,
+  ActivityIndicator,
 } from "react-native";
-import { Button, Card } from "react-native-paper"; // Assuming you're using react-native-paper for Card component
+import { Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios"; // Import Axios
 
 // Get device width to help position elements
 const screenWidth = Dimensions.get("window").width;
@@ -21,39 +23,38 @@ const workouts = [
   { id: 4, title: "Arm Workout", completed: false },
 ];
 
-
-current_day = 1;
-reps = [8,12];
+current_day = 0;
+reps = [8, 12];
 sets = 3;
-
-
-
-
-
-// Exercise data to be used in the modal
-const exercises = [
-  {
-    name: "Deadlift",
-    image: require("../images/squat.png"),
-    weight: "135lb",
-  },
-  {
-    name: "Bench Press",
-    image: require("../images/incline.png"),
-    weight: "70kg",
-    reps: 8,
-    sets: 4,
-  },
-  // Add more exercises as needed
-];
 
 export default function CurrentWeek() {
   const [workoutStatus, setWorkoutStatus] = useState(workouts); // Track workout completion status
   const [modalVisible, setModalVisible] = useState(false); // Modal visibility state
   const [currentWorkoutId, setCurrentWorkoutId] = useState(null); // Track current workout
   const [currentStep, setCurrentStep] = useState(0); // Track current step in workout
+  const [exercises, setExercises] = useState([]); // State for fetched exercises
+  const [loading, setLoading] = useState(true); // State for loading
+  const [error, setError] = useState(null); // State for error handling
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    // Fetch exercises from the backend
+    const fetchExercises = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/getWorkouts", {
+          params: current_day, // Pass current day as a query parameter
+        });
+        setExercises(response.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExercises();
+  }, []);
 
   const handlePress = (workoutId) => {
     // Set the current workout and show the modal
@@ -81,6 +82,18 @@ export default function CurrentWeek() {
     current_day += 1;
     navigation.navigate("CurrentWeek"); // Navigate back to Home screen or desired screen
   };
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text>Error: {error}</Text>
+      </View>
+    );
+  }
 
   const currentExercise = exercises[currentStep];
   const isLastExercise = currentStep === exercises.length - 1;
@@ -116,16 +129,19 @@ export default function CurrentWeek() {
             {currentExercise.name}
           </Text>
           <Card>
-            {/* Display exercise image */}
-            <Card.Cover
-              source={currentExercise.image}
-              style={{ width: "100%", height: 300 }}
-            />
+            {currentExercise.image && (
+              <Card.Cover
+                source={currentExercise.image}
+                style={{ width: "100%", height: 300 }}
+              />
+            )}
             <Card.Content>
               <Text style={{ marginTop: 10, fontSize: 20 }}>
-                Weight: {currentExercise.weight}
+                Weight: {currentExercise.weight || "N/A"}
               </Text>
-              <Text style={{ fontSize: 20 }}>Reps: 8-12</Text>
+              <Text style={{ fontSize: 20 }}>
+                Reps: 8-12
+              </Text>
               <Text style={{ fontSize: 20 }}>Sets: 3</Text>
             </Card.Content>
           </Card>
@@ -162,4 +178,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
