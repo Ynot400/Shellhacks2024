@@ -308,6 +308,6 @@ const styles = StyleSheet.create({
   },
   cardCover: {
     width: 300,
-    height: 300,
+    height: 300, //Need to change to right value
   },
 });
