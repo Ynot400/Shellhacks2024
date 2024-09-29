@@ -6,7 +6,7 @@ import { useTheme } from '../ColorContext';
 export default function Trainer() {
   const { theme } = useTheme();
   const [inquiry, setInquiry] = useState('');  // User inquiry state
-  const [response, setResponse] = useState('');  // AI response state
+  const [response, setResponse] = useState('');  // AI response state 
 
   const handleSubmit = () => {
     if (!inquiry.trim()) {
