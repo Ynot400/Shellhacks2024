@@ -78,7 +78,8 @@ export default function CurrentWeek() {
     setModalVisible(false);
     setCurrentStep(0); // Reset to initial step
     setCurrentWorkoutId(null);
-    navigation.navigate("Home"); // Navigate back to Home screen or desired screen
+    current_day += 1;
+    navigation.navigate("CurrentWeek"); // Navigate back to Home screen or desired screen
   };
 
   const currentExercise = exercises[currentStep];
@@ -124,8 +125,8 @@ export default function CurrentWeek() {
               <Text style={{ marginTop: 10, fontSize: 20 }}>
                 Weight: {currentExercise.weight}
               </Text>
-              <Text style={{ fontSize: 20 }}>Reps: {currentExercise.reps}</Text>
-              <Text style={{ fontSize: 20 }}>Sets: {currentExercise.sets}</Text>
+              <Text style={{ fontSize: 20 }}>Reps: 8-12</Text>
+              <Text style={{ fontSize: 20 }}>Sets: 3</Text>
             </Card.Content>
           </Card>
           <Button
