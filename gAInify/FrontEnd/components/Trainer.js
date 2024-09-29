@@ -1,12 +1,19 @@
 import React, { useState } from "react";
-import { Text, View, TextInput, Button, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import axios from "axios";
-import { useTheme } from '../ColorContext';
+import { useTheme } from "../ColorContext";
 
 export default function Trainer() {
   const { theme } = useTheme();
-  const [inquiry, setInquiry] = useState('');  // User inquiry state
-  const [response, setResponse] = useState('');  // AI response state 
+  const [inquiry, setInquiry] = useState(""); // User inquiry state
+  const [response, setResponse] = useState(""); // AI response state
 
   const handleSubmit = () => {
     if (!inquiry.trim()) {
@@ -18,7 +25,7 @@ export default function Trainer() {
 
     // Send the inquiry to the backend
     axios
-      .post("http://localhost:3000/askTrainer", { message: inquiry })  // URL points to the backend
+      .post("http://localhost:3000/askTrainer", { message: inquiry }) // URL points to the backend
       .then((res) => {
         // console.log("Response from backend:", res.data);
         setResponse(res.data);
@@ -30,7 +37,12 @@ export default function Trainer() {
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.background}]}>
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        { backgroundColor: theme.background },
+      ]}
+    >
       <Text style={styles.title}>Ask the AI Trainer</Text>
       <TextInput
         style={styles.input}
@@ -40,7 +52,7 @@ export default function Trainer() {
       />
       <Button title="Submit" onPress={handleSubmit} />
       <Text style={styles.response}>{response}</Text>
-    </View>
+    </ScrollView>
   );
 }
 
