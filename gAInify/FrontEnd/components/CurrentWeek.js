@@ -89,9 +89,11 @@ export default function CurrentWeek() {
   const [error, setError] = useState(null); // State for error handling
   const [sliderSets, setSliderSets] = useState(3);
   const [sliderReps, setSliderReps] = useState(8);
-  const [exerciseUncomfortable, setExerciseUncomfortable] = useState(false);
   const [easeLevel, setEaseLevel] = useState(0);
   const [xpGained, setXpGained] = useState({ reps: 0, sets: 0 });
+  const [exerciseUncomfortable, setExerciseUncomfortable] = useState(false);
+  const [uncomfortableArray, setUncomfortableArray] = useState([]); // Use state for uncomfortableArray
+  const [easeArray, setEaseArray] = useState([]); // Use state for easeArray
   const { theme } = useTheme();
   const navigation = useNavigation();
 
@@ -121,6 +123,23 @@ export default function CurrentWeek() {
     fetchExercises();
   }, [current_day]);
 
+  const modifyExercises = async (exercise) => {
+    try {
+      await axios.post("http://localhost:3000/modifyWorkout", exercise);
+      console.log("Exercise modified successfully");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const uncomfortableAppend = () => {
+    setUncomfortableArray((prevArray) => [...prevArray, exerciseUncomfortable]);
+  };
+
+  const easeAppend = () => {
+    setEaseArray((prevArray) => [...prevArray, easeLevel]);
+  };
+
   const handlePress = (workoutId) => {
     setCurrentWorkoutId(workoutId);
     setModalVisible(true);
@@ -136,15 +155,20 @@ export default function CurrentWeek() {
     if (currentStep < exercises.length - 1) {
       setCurrentStep(currentStep + 1);
     }
+  
 
     const newXp = {
       reps: sliderReps * 5, // Example XP calculation
       sets: sliderSets * 10,
     };
     setXpGained(newXp);
+
+    uncomfortableAppend();
+    easeAppend();
   };
 
   const handleComplete = () => {
+
     //send exercise with axios. probably a post from axios.
     setModalVisible(false);
     setCurrentStep(0);
@@ -153,7 +177,16 @@ export default function CurrentWeek() {
     if (current_day > 3) {
       current_day = 0;
     }
-    handleIncrease();
+    // handleIncrease();
+    const newModifyArray = exercises.map((exercise, i) => ({
+      collectionName: exercise.collection_name,
+      id: exercise.id,
+      difficultyRating: easeArray[i],
+      uncomfortable: uncomfortableArray[i]
+    }));
+    console.log("This should print")
+    console.log("The values", newModifyArray);
+    modifyExercises(newModifyArray);
     navigation.navigate("CurrentWeek");
   };
 
@@ -258,11 +291,21 @@ export default function CurrentWeek() {
           {/* Slider for reps */}
           <Text>Average number of reps</Text>
           <Slider
-            minimumValue={5}
+            minimumValue={1}
             maximumValue={20}
             step={1}
             value={sliderReps}
             onValueChange={setSliderReps}
+            color={theme.primary}
+          />
+
+          {/* Slider for difficulty */}
+          <Text>Difficulty?</Text>
+          <Slider
+            minimumValue={1}
+            maximumValue={10}
+            step={1}
+            onValueChange={setEaseLevel}
             color={theme.primary}
           />
 
