@@ -1,5 +1,3 @@
-//console.log('Hello, World!');
-
 require('dotenv').config();  // Load the environment variables from the .env file
 const https = require('https');
 
