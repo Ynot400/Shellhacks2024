@@ -21,20 +21,25 @@ const workouts = [
   { id: 4, title: "Arm Workout", completed: false },
 ];
 
+
+current_day = 1;
+reps = [8,12];
+sets = 3;
+
+
+
+
+
 // Exercise data to be used in the modal
 const exercises = [
   {
-    name: "Squats",
-    image:
-      "https://static.vecteezy.com/system/resources/previews/006/417/702/original/man-character-doing-dumbbell-squats-exercise-flat-illustration-isolated-on-different-layers-free-vector.jpg",
-    weight: "50kg",
-    reps: 10,
-    sets: 3,
+    name: "Deadlift",
+    image: require("../images/squat.png"),
+    weight: "135lb",
   },
   {
     name: "Bench Press",
-    image:
-      "https://static.vecteezy.com/system/resources/previews/006/417/702/original/man-character-doing-dumbbell-squats-exercise-flat-illustration-isolated-on-different-layers-free-vector.jpg",
+    image: require("../images/incline.png"),
     weight: "70kg",
     reps: 8,
     sets: 4,
@@ -112,7 +117,7 @@ export default function CurrentWeek() {
           <Card>
             {/* Display exercise image */}
             <Card.Cover
-              source={{ uri: currentExercise.image }}
+              source={currentExercise.image}
               style={{ width: "100%", height: 300 }}
             />
             <Card.Content>
