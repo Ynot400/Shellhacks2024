@@ -45,7 +45,6 @@ export default function Workout() {
         {currentExercise.name}
       </Text>
       <Card>
-        {/* Display exercise image */}
         <Card.Cover
           source={{ uri: currentExercise.image }}
           style={{ width: "100%", height: 300 }}

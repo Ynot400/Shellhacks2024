@@ -21,20 +21,25 @@ const workouts = [
   { id: 4, title: "Arm Workout", completed: false },
 ];
 
+
+current_day = 1;
+reps = [8,12];
+sets = 3;
+
+
+
+
+
 // Exercise data to be used in the modal
 const exercises = [
   {
-    name: "Squats",
-    image:
-      "https://static.vecteezy.com/system/resources/previews/006/417/702/original/man-character-doing-dumbbell-squats-exercise-flat-illustration-isolated-on-different-layers-free-vector.jpg",
-    weight: "50kg",
-    reps: 10,
-    sets: 3,
+    name: "Deadlift",
+    image: require("../images/squat.png"),
+    weight: "135lb",
   },
   {
     name: "Bench Press",
-    image:
-      "https://static.vecteezy.com/system/resources/previews/006/417/702/original/man-character-doing-dumbbell-squats-exercise-flat-illustration-isolated-on-different-layers-free-vector.jpg",
+    image: require("../images/incline.png"),
     weight: "70kg",
     reps: 8,
     sets: 4,
@@ -73,7 +78,8 @@ export default function CurrentWeek() {
     setModalVisible(false);
     setCurrentStep(0); // Reset to initial step
     setCurrentWorkoutId(null);
-    navigation.navigate("Home"); // Navigate back to Home screen or desired screen
+    current_day += 1;
+    navigation.navigate("CurrentWeek"); // Navigate back to Home screen or desired screen
   };
 
   const currentExercise = exercises[currentStep];
@@ -112,15 +118,15 @@ export default function CurrentWeek() {
           <Card>
             {/* Display exercise image */}
             <Card.Cover
-              source={{ uri: currentExercise.image }}
+              source={currentExercise.image}
               style={{ width: "100%", height: 300 }}
             />
             <Card.Content>
               <Text style={{ marginTop: 10, fontSize: 20 }}>
                 Weight: {currentExercise.weight}
               </Text>
-              <Text style={{ fontSize: 20 }}>Reps: {currentExercise.reps}</Text>
-              <Text style={{ fontSize: 20 }}>Sets: {currentExercise.sets}</Text>
+              <Text style={{ fontSize: 20 }}>Reps: 8-12</Text>
+              <Text style={{ fontSize: 20 }}>Sets: 3</Text>
             </Card.Content>
           </Card>
           <Button

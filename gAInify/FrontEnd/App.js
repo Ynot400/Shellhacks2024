@@ -5,9 +5,11 @@ import CurrentWeek from "./components/CurrentWeek";
 import Trainer from "./components/Trainer";
 import React from "react";
 import Settings from "./components/Settings";
+import { UserProvider } from "./UserContext";
 const Stack = createBottomTabNavigator();
 export default function App() {
   return (
+    <UserProvider>
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home1} />
@@ -16,5 +18,6 @@ export default function App() {
         <Stack.Screen name="Settings" component={Settings} />
       </Stack.Navigator>
     </NavigationContainer>
+    </UserProvider>
   );
 }
