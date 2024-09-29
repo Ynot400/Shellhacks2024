@@ -64,7 +64,7 @@ export default function CurrentWeek() {
   // Function to dynamically require images
   const getImageSource = (imageName) => {
     try {
-      let image = require(`./images/${imageName}.png`); // Adjust the path as necessary
+      // let image = require(`./images/${imageName}.png`); // Adjust the path as necessary
       return image;
     } catch (error) {
       console.error("Image not found:", error);
