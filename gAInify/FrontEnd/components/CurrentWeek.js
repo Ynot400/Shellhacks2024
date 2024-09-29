@@ -145,6 +145,7 @@ export default function CurrentWeek() {
   };
 
   const handleComplete = () => {
+    //send exercise with axios. probably a post from axios.
     setModalVisible(false);
     setCurrentStep(0);
     setCurrentWorkoutId(null);
