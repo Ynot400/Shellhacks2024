@@ -48,7 +48,6 @@ async function modifyExercise(exerciseDataList) {
     }
 }
 
-
 // Function to update primary exercises based on user feedback for a list of exercises
 async function updatePrimaryExercise(exerciseDataList) {
     try {
@@ -94,28 +93,29 @@ async function updatePrimaryExercise(exerciseDataList) {
     }
 }
 
+// Example list of exercises to modify and update primary based on user feedback
 const exercisesList = [
     {
-      collectionName: 'Abs (Abs)',
-      id: 'Crunches',
-      difficultyRating: 6,
-      uncomfortable: true
+        collectionName: 'Abs (Abs)',
+        id: 'Crunches',
+        difficultyRating: 6,  // This is less than 7, so we will adjust weight or minutes
+        uncomfortable: true   // This exercise was uncomfortable
     },
     {
-      collectionName: 'Legs (Calves)',
-      id: 'Dumbbell Calf Raises',
-      difficultyRating: 7,
-      uncomfortable: false
+        collectionName: 'Legs (Calves)',
+        id: 'Dumbbell Calf Raises',
+        difficultyRating: 7,  // This is not less than 7, so we won't adjust weight or minutes
+        uncomfortable: false  // This exercise was not uncomfortable
     }
     // Add more exercise objects as needed
-  ];
-  
+];
+
 // Main function to run both tasks sequentially
 async function main() {
-    // Call adjustExerciseDifficulty to modify weight or minutes
+    // Call modifyExercise to adjust weight or minutes
     await modifyExercise(exercisesList);
 
-    // Call updatePrimaryExercise with example data
+    // Call updatePrimaryExercise with the same list
     await updatePrimaryExercise(exercisesList);
 }
 
