@@ -3,7 +3,7 @@ import { createContext, useState } from 'react';
 export const UserContext = createContext();
 
 export const UserProvider = (props) => {
-  const [xp, setXP] = useState(0.1);
+  const [xp, setXP] = useState(0.26);
   const [level, setLevel] = useState(1);
   const [body_weight, setWeight] = useState(0);
   const [current_week, setWeek] = useState(1);

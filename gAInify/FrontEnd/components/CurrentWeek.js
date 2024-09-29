@@ -245,6 +245,7 @@ export default function CurrentWeek() {
             step={1}
             value={sliderSets}
             onValueChange={setSliderSets}
+            color={theme.accent}
           />
 
           {/* Slider for reps */}
@@ -255,6 +256,7 @@ export default function CurrentWeek() {
             step={1}
             value={sliderReps}
             onValueChange={setSliderReps}
+            color={theme.primary}
           />
 
           {/* Checkbox for discomfort */}
