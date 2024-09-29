@@ -7,16 +7,15 @@ import {
   Dimensions,
   Modal,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import DynamicImage from './DynamicImages'; // Import the component
-import axios from "axios"; // Import Axios
+import axios from "axios";
+import { useTheme } from '../ColorContext';
 
-// Get device width to help position elements
 const screenWidth = Dimensions.get("window").width;
 
-// Dummy workout data
 const workouts = [
   { id: 1, title: "Chest Workout", completed: false },
   { id: 2, title: "Back Workout", completed: false },
@@ -24,14 +23,12 @@ const workouts = [
   { id: 4, title: "Arm Workout", completed: false },
 ];
 
-
-
 current_day = 0;
 reps = [8, 12];
 sets = 3;
 
 const images = {
-  "Back Extensions": require('../images/Back Extensions.png'),
+ "Back Extensions": require('../images/Back Extensions.png'),
   "Bench": require('../images/Bench.png'),
   "Bicep Curl": require('../images/Bicep Curl.png'),
   "Biking": require('../images/Biking.png'),
@@ -73,7 +70,8 @@ const images = {
   "Treadmill": require('../images/Treadmill.png'),
   "Tricep Dips": require('../images/Tricep Dips.png'),
   "Tricep Overhead": require('../images/Tricep Overhead.png'),
-  "Tricep Pushdown": require('../images/Tricep Pushdown.png')
+  "Tricep Pushdown": require('../images/Tricep Pushdown.png'),
+  "daylock": require('../images/daylock.png')
 };
 
 const handleIncrease = () => {
@@ -86,28 +84,23 @@ const handleIncrease = () => {
 };
 
 export default function CurrentWeek() {
-  const [workoutStatus, setWorkoutStatus] = useState(workouts); // Track workout completion status
-  const [modalVisible, setModalVisible] = useState(false); // Modal visibility state
-  const [currentWorkoutId, setCurrentWorkoutId] = useState(null); // Track current workout
-  const [currentStep, setCurrentStep] = useState(0); // Track current step in workout
-  const [exercises, setExercises] = useState([]); // State for fetched exercises
-  const [loading, setLoading] = useState(true); // State for loading
-  const [error, setError] = useState(null); // State for error handling
-
+  const [workoutStatus, setWorkoutStatus] = useState(workouts);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [currentWorkoutId, setCurrentWorkoutId] = useState(null);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [exercises, setExercises] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { theme } = useTheme();
   const navigation = useNavigation();
 
   useEffect(() => {
-    // Fetch exercises from the backend
     const fetchExercises = async () => {
       try {
         const response = await axios.get("http://localhost:3000/getWorkouts", {
           params: { current_day },
         });
-        console.log(response.data); // Check what you're getting
         setExercises(response.data);
-        // setImages(respone.data.id: )
-       
-
       } catch (err) {
         setError(err.message);
       } finally {
@@ -122,7 +115,6 @@ export default function CurrentWeek() {
     setCurrentWorkoutId(workoutId);
     setModalVisible(true);
 
-    // Mark workout as complete after opening modal
     setWorkoutStatus((prevStatus) =>
       prevStatus.map((workout) =>
         workout.id === workoutId ? { ...workout, completed: true } : workout
@@ -138,11 +130,11 @@ export default function CurrentWeek() {
 
   const handleComplete = () => {
     setModalVisible(false);
-    setCurrentStep(0); // Reset to initial step
+    setCurrentStep(0);
     setCurrentWorkoutId(null);
     current_day += 1;
     handleIncrease();
-    navigation.navigate("CurrentWeek"); // Navigate back to Home screen or desired screen
+    navigation.navigate("CurrentWeek");
   };
 
   if (loading) {
@@ -151,7 +143,7 @@ export default function CurrentWeek() {
 
   if (error) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor: theme.background}]}>
         <Text>Error: {error}</Text>
       </View>
     );
@@ -161,23 +153,36 @@ export default function CurrentWeek() {
   const isLastExercise = currentStep === exercises.length - 1;
 
   return (
-    <View style={styles.container}>
-      {workoutStatus.map((workout, index) => (
-        <TouchableOpacity
-          key={workout.id}
-          style={[
-            styles.circle,
-            {
-              backgroundColor: workout.completed ? "green" : "gray",
-              top: index * 100,
-              left: screenWidth / 2 + Math.sin(index * 1.5) * 100,
-            },
-          ]}
-          onPress={() => handlePress(workout.id)}
-        >
-          <Text style={styles.text}>{workout.title}</Text>
-        </TouchableOpacity>
-      ))}
+    <View style={[styles.container, {backgroundColor: theme.background}]}>
+      {workoutStatus.map((workout, index) => {
+        const isUnlocked = index === 0 || workoutStatus[index - 1].completed;
+        return (
+          <TouchableOpacity
+            key={workout.id}
+            style={[
+              styles.circle,
+              {
+                backgroundColor: workout.completed ? theme.primary : theme.secondary,
+                top: index * 100,
+                left: screenWidth / 2 + Math.sin(index * 1.5) * 100,
+              },
+            ]}
+            onPress={isUnlocked ? () => handlePress(workout.id) : null}
+            activeOpacity={isUnlocked ? 0.7 : 1}
+            disabled={!isUnlocked} // Disable touch if not unlocked
+          >
+            {isUnlocked ? (
+              <Text style={styles.text}>{workout.title}</Text>
+            ) : (
+              <Image
+                source={images["daylock"]}
+                style={styles.lockedImage} // Locked image style
+                resizeMode="contain"
+              />
+            )}
+          </TouchableOpacity>
+        );
+      })}
 
       {/* Fullscreen Modal for workout steps */}
       <Modal
@@ -238,6 +243,12 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     fontWeight: "bold",
+    textAlign: "center", // Center text horizontally
+  },
+  lockedImage: {
+    width: 80,
+    height: 80, // Ensure the image fits within the circle
+    borderRadius: 40,
   },
   cardCover: {
     width: 300,
