@@ -1,7 +1,7 @@
 require('dotenv').config(); // Load environment variables
 const express = require('express'); // Import Express
 const cors = require('cors'); // Import the cors package
-const { getExercises, modifyExercise } = require('./Exercises/exercisesService'); // Import service functions
+const { getExercises, modifyExercise, updatePrimaryExercise } = require('./Exercises/exercisesService'); // Import service functions
 const { personalTrainer } = require('./PersonalTrainer'); // Import personal trainer function
 
 // Define the port
@@ -28,6 +28,7 @@ app.get('/getWorkouts', async (req, res) => {
 app.post('/modifyWorkout', async (req, res) => {
   try {
     await modifyExercise(req.body); // Pass the request body to the service
+    await updatePrimaryExercise(req.body); // Call the updatePrimaryExercise function
     res.status(200).json({ message: 'Workout modified successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });

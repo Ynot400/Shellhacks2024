@@ -8,18 +8,7 @@ async function getExercises(day) {
     const randomBinary = Math.floor(Math.random() * 2);
     const exercises = [];
     let snapshot;
-
-    // Fetch either an ab or cardio workout
-    const workoutType = absOrCardio[randomBinary];
-    const collectionName = workoutType === 'abs' ? 'Abs (Abs)' : 'Cardio (Running)';
-    
-    snapshot = await db.collection(collectionName).where('Primary', '==', true).get();
-    snapshot.forEach(doc => {
-        exercises.push({ collection_name: collectionName, id: doc.id, ...doc.data() }); // Include document ID
-    });
-
-    console.log("Day: ", day);
-    
+       
     // Map of muscle groups to their respective collection names
     const muscleGroupCollections = {
         chest: [
@@ -59,6 +48,15 @@ async function getExercises(day) {
             exercises.push({ collection_name: collection, id: doc.id, ...doc.data() }); // Include document ID
         });
     }
+
+   // Fetch either an ab or cardio workout
+   const workoutType = absOrCardio[randomBinary];
+   const collectionName = workoutType === 'abs' ? 'Abs (Abs)' : 'Cardio (Running)';
+   
+   snapshot = await db.collection(collectionName).where('Primary', '==', true).get();
+   snapshot.forEach(doc => {
+       exercises.push({ collection_name: collectionName, id: doc.id, ...doc.data() }); // Include document ID
+   });
 
 
     return exercises;
