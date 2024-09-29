@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import { Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { useTheme } from "../ColorContext";
+import { UserContext } from "../UserContext";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -59,7 +60,7 @@ const images = {
   "Leg Curl Machine": require("../images/Leg Curl Machine.png"),
   "Leg Extension Machine": require("../images/Leg Extension Machine.png"),
   "Leg Raises": require("../images/Leg Raises.png"),
-  Lunges: require("../images/Lunges.png"),
+  "Lunges": require("../images/Lunges.png"),
   "Pec Deck Machine": require("../images/Pec Deck Machine.png"),
   "Pull-Ups": require("../images/Pull-Ups.png"),
   "Rear Delt Fly (Dumbbell)": require("../images/Rear Delt Fly (Dumbbell).png"),
@@ -77,16 +78,11 @@ const images = {
   daylock: require("../images/daylock.png"),
 };
 
-const handleIncrease = () => {
-  if (xp >= 0.9) {
-    setXP(Number((xp - 0.9).toFixed(1)));
-    setLevel(level + 1);
-  } else {
-    setXP(Number((xp + 0.1).toFixed(1)));
-  }
-};
+
+
 
 export default function CurrentWeek() {
+  const { xp, setXP, level, setLevel } = useContext(UserContext);
   const [workoutStatus, setWorkoutStatus] = useState(workouts); // Track workout completion status
   const [modalVisible, setModalVisible] = useState(false); // Modal visibility state
   const [currentWorkoutId, setCurrentWorkoutId] = useState(null); // Track current workout
@@ -101,6 +97,15 @@ export default function CurrentWeek() {
   const [xpGained, setXpGained] = useState({ reps: 0, sets: 0 });
   const { theme } = useTheme();
   const navigation = useNavigation();
+
+  const handleIncrease = () => {
+    if (xp >= 0.9) {
+      setXP(Number((xp - 0.9).toFixed(1)));
+      setLevel(level + 1);
+    } else {
+      setXP(Number((xp + 0.1).toFixed(1)));
+    }
+  };
 
   useEffect(() => {
     const fetchExercises = async () => {
