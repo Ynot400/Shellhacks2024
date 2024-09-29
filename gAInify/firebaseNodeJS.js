@@ -10,7 +10,7 @@ if (!admin.apps.length) {
   });
 }
 
-// Firestore reference
+// Firestore reference 
 const db = admin.firestore();
 
 // Export the Firestore instance for use in other modules
