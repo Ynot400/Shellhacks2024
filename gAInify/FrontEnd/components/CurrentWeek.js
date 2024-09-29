@@ -357,8 +357,8 @@ const styles = StyleSheet.create({
     borderRadius: 40,
   },
   cardCover: {
-    width: 300,
-    height: 200, //Need to change to right value 
+    width: 350,
+    height: 400, //Need to change to right value 
     resizeMode: 'contain'
   },
 });
