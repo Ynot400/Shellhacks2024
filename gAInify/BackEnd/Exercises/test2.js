@@ -49,7 +49,7 @@ async function adjustExerciseDifficulty(exerciseData) {
 // Function to update primary exercises based on user feedback
 async function updatePrimaryExercise(exerciseData) {
     try {
-        const { collectionName, id, difficultyRating, uncomfortable } = exerciseData;
+        const { collectionName, id, uncomfortable } = exerciseData;
 
         // Reference to the current exercise in the provided collection
         const exerciseRef = db.collection(collectionName).doc(id);
@@ -63,8 +63,10 @@ async function updatePrimaryExercise(exerciseData) {
             console.log(`Marked exercise ${id} as not primary.`);
 
             // Query to find another exercise in the same collection that is not marked as primary
+            // and exclude the current exercise that was marked as uncomfortable
             const exercisesSnapshot = await db.collection(collectionName)
                 .where('Primary', '==', false)  // Look for exercises not already marked as Primary
+                .where(admin.firestore.FieldPath.documentId(), '!=', id)  // Exclude the current exercise
                 .limit(1)  // Limit to one result to make the new primary
                 .get();
 
@@ -90,15 +92,14 @@ async function updatePrimaryExercise(exerciseData) {
 // Example data for adjustExerciseDifficulty
 const exampleDifficultyData = {
     collectionName: 'Abs (Abs)',
-    id: 'Leg Raises',
+    id: 'Crunches',
     difficultyRating: 6,  // This is less than 7, so we will adjust weight or minutes
 };
 
 // Example data for updatePrimaryExercise
 const examplePrimaryData = {
     collectionName: 'Abs (Abs)',
-    id: 'Leg Raises',
-    difficultyRating: 6,  // Difficulty rating, just for reference
+    id: 'Crunches',
     uncomfortable: true   // Was the exercise uncomfortable? Set true for this example
 };
 
