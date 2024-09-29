@@ -23,7 +23,7 @@ const exercises = [
   // Add more exercises here
 ];
 
-export default function Lesson() {
+export default function Workout() {
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const navigation = useNavigation(); // To navigate between screens
 
@@ -31,7 +31,7 @@ export default function Lesson() {
     if (currentExerciseIndex < exercises.length - 1) {
       setCurrentExerciseIndex(currentExerciseIndex + 1);
     } else {
-      // Navigate back to CurrentWeek once the lesson is completed
+      // Navigate back to CurrentWeek once the Workout is completed
       navigation.navigate("CurrentWeek");
     }
   };
@@ -63,7 +63,7 @@ export default function Lesson() {
         mode="contained"
         onPress={handleComplete}
       >
-        {isLastExercise ? "Complete Lesson" : "Complete Exercise"}
+        {isLastExercise ? "Complete Workout" : "Complete Exercise"}
       </Button>
     </View>
   );

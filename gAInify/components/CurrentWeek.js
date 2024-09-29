@@ -5,55 +5,133 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Modal,
 } from "react-native";
+import { Button, Card } from "react-native-paper"; // Assuming you're using react-native-paper for Card component
 import { useNavigation } from "@react-navigation/native";
 
 // Get device width to help position elements
 const screenWidth = Dimensions.get("window").width;
 
-// Dummy lesson data
-const lessons = [
-  { id: 1, title: "Lesson 1", completed: false },
-  { id: 2, title: "Lesson 2", completed: false },
-  { id: 3, title: "Lesson 3", completed: false },
-  { id: 4, title: "Lesson 4", completed: false },
-  { id: 5, title: "Lesson 5", completed: false },
+// Dummy workout data
+const workouts = [
+  { id: 1, title: "Chest Workout", completed: false },
+  { id: 2, title: "Back Workout", completed: false },
+  { id: 3, title: "Leg Workout", completed: false },
+  { id: 4, title: "Arm Workout", completed: false },
+];
+
+// Exercise data to be used in the modal
+const exercises = [
+  {
+    name: "Squats",
+    image:
+      "https://static.vecteezy.com/system/resources/previews/006/417/702/original/man-character-doing-dumbbell-squats-exercise-flat-illustration-isolated-on-different-layers-free-vector.jpg",
+    weight: "50kg",
+    reps: 10,
+    sets: 3,
+  },
+  {
+    name: "Bench Press",
+    image:
+      "https://static.vecteezy.com/system/resources/previews/006/417/702/original/man-character-doing-dumbbell-squats-exercise-flat-illustration-isolated-on-different-layers-free-vector.jpg",
+    weight: "70kg",
+    reps: 8,
+    sets: 4,
+  },
+  // Add more exercises as needed
 ];
 
 export default function CurrentWeek() {
-  const [lessonStatus, setLessonStatus] = useState(lessons); // Track lesson completion status
+  const [workoutStatus, setWorkoutStatus] = useState(workouts); // Track workout completion status
+  const [modalVisible, setModalVisible] = useState(false); // Modal visibility state
+  const [currentWorkoutId, setCurrentWorkoutId] = useState(null); // Track current workout
+  const [currentStep, setCurrentStep] = useState(0); // Track current step in workout
+
   const navigation = useNavigation();
 
-  const handlePress = (lessonId) => {
-    // Navigate to the lesson screen
-    navigation.navigate("Lesson", { lessonId });
+  const handlePress = (workoutId) => {
+    // Set the current workout and show the modal
+    setCurrentWorkoutId(workoutId);
+    setModalVisible(true);
 
-    // Mark lesson as complete after navigating
-    setLessonStatus((prevStatus) =>
-      prevStatus.map((lesson) =>
-        lesson.id === lessonId ? { ...lesson, completed: true } : lesson
+    // Mark workout as complete after opening modal
+    setWorkoutStatus((prevStatus) =>
+      prevStatus.map((workout) =>
+        workout.id === workoutId ? { ...workout, completed: true } : workout
       )
     );
   };
 
+  const handleNext = () => {
+    if (currentStep < exercises.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handleComplete = () => {
+    setModalVisible(false);
+    setCurrentStep(0); // Reset to initial step
+    setCurrentWorkoutId(null);
+    navigation.navigate("Home"); // Navigate back to Home screen or desired screen
+  };
+
+  const currentExercise = exercises[currentStep];
+  const isLastExercise = currentStep === exercises.length - 1;
+
   return (
     <View style={styles.container}>
-      {lessonStatus.map((lesson, index) => (
+      {workoutStatus.map((workout, index) => (
         <TouchableOpacity
-          key={lesson.id}
+          key={workout.id}
           style={[
             styles.circle,
             {
-              backgroundColor: lesson.completed ? "green" : "gray",
+              backgroundColor: workout.completed ? "green" : "gray",
               top: index * 100, // Increase vertical spacing to avoid overlap
               left: screenWidth / 2 + Math.sin(index * 1.5) * 100, // Adjusting curve factor to avoid overlap
             },
           ]}
-          onPress={() => handlePress(lesson.id)}
+          onPress={() => handlePress(workout.id)}
         >
-          <Text style={styles.text}>{lesson.title}</Text>
+          <Text style={styles.text}>{workout.title}</Text>
         </TouchableOpacity>
       ))}
+
+      {/* Fullscreen Modal for workout steps */}
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent={false} // Setting transparent to false for full-screen
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={{ flex: 1, padding: 20 }}>
+          <Text style={{ fontSize: 24, marginBottom: 20 }}>
+            {currentExercise.name}
+          </Text>
+          <Card>
+            {/* Display exercise image */}
+            <Card.Cover
+              source={{ uri: currentExercise.image }}
+              style={{ width: "100%", height: 300 }}
+            />
+            <Card.Content>
+              <Text style={{ marginTop: 10, fontSize: 20 }}>
+                Weight: {currentExercise.weight}
+              </Text>
+              <Text style={{ fontSize: 20 }}>Reps: {currentExercise.reps}</Text>
+              <Text style={{ fontSize: 20 }}>Sets: {currentExercise.sets}</Text>
+            </Card.Content>
+          </Card>
+          <Button
+            style={{ marginTop: 20, fontSize: 20 }}
+            mode="contained"
+            onPress={isLastExercise ? handleComplete : handleNext}
+          >
+            {isLastExercise ? "Complete Workout" : "Next Exercise"}
+          </Button>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -78,3 +156,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
