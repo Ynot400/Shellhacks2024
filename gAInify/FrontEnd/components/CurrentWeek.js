@@ -277,38 +277,42 @@ export default function CurrentWeek() {
             <Text>sets: {xpGained.sets}xp</Text>
           </View>
 
-          {/* Slider for sets */}
-          <Text>Number of sets</Text>
-          <Slider
-            minimumValue={1}
-            maximumValue={10}
-            step={1}
-            value={sliderSets}
-            onValueChange={setSliderSets}
-            color={theme.accent}
-          />
+    `     <Card>
+            {/* Slider for sets */}
+            <Text>Number of sets</Text>
+            <Slider
+              minimumValue={1}
+              maximumValue={10}
+              step={1}
+              value={sliderSets}
+              onValueChange={setSliderSets}
+              minimumTrackTintColor={theme.accent}
+            />
+            <Text style={styles.sliderValue}>{sliderSets}</Text>
 
-          {/* Slider for reps */}
-          <Text>Average number of reps</Text>
-          <Slider
-            minimumValue={1}
-            maximumValue={20}
-            step={1}
-            value={sliderReps}
-            onValueChange={setSliderReps}
-            color={theme.primary}
-          />
+            {/* Slider for reps */}
+            <Text>Average number of reps</Text>
+            <Slider
+              minimumValue={1}
+              maximumValue={20}
+              step={1}
+              value={sliderReps}
+              onValueChange={setSliderReps}
+              minimumTrackTintColor={theme.accent}
+            />
+            <Text style={styles.sliderValue}>{sliderReps}</Text>
 
-          {/* Slider for difficulty */}
-          <Text>Difficulty?</Text>
-          <Slider
-            minimumValue={1}
-            maximumValue={10}
-            step={1}
-            onValueChange={setEaseLevel}
-            color={theme.primary}
-          />
-
+            {/* Slider for difficulty */}
+            <Text>Difficulty?</Text>
+            <Slider
+              minimumValue={1}
+              maximumValue={10}
+              step={1}
+              onValueChange={setEaseLevel}
+              minimumTrackTintColor={theme.primary}
+            />
+            <Text style={styles.sliderValue}>{setEaseLevel}</Text>
+          </Card>`
           {/* Checkbox for discomfort */}
           <View style={styles.checkboxContainer}>
             <CheckBox

@@ -8,7 +8,7 @@ async function getExercises(day) {
     const randomBinary = Math.floor(Math.random() * 2);
     const exercises = [];
     let snapshot;
-       
+
     // Map of muscle groups to their respective collection names
     const muscleGroupCollections = {
         chest: [
@@ -93,7 +93,7 @@ async function modifyExercise(exerciseDataList) {
                     
                     // Update the document with the new weight
                     await exerciseRef.update({
-                        Weight: admin.firestore.FieldValue.arrayUnion(newWeight)
+                        Weight: db.FieldValue.arrayUnion(newWeight)
                     });
                     console.log(`Increased weight for exercise ${id} by 5 pounds.`);
                 } else if (exercise.Minutes) {
